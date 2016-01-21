@@ -5,7 +5,7 @@ extern struct{
 #define nSegments 5
 enum SEGMENTS {cap1, bs1, ts1, ts2, det1};
 
-char* SegNames[nSegments] = { "cap1.map", "bs1.map", "ts1.map", "ts2.map", "det1.map"};
+char* SegNames[nSegments] = { "cap_1.map", "bs_1.map", "ts_1.map", "ts_2.map", "det_1.map"};
 
 struct FileHeader {
 	int i_max;
