@@ -1,8 +1,8 @@
 extern "C" {
-  void ConvertPDG_(int *flukaid, int *pdgcode);
+  void convertpdg_(int *flukaid, int *pdgcode);
 }
 
-void ConvertPDG_(int *flukaid, int *pdgcode)
+void convertpdg_(int *flukaid, int *pdgcode)
 {
   switch (*flukaid) {
     // 4He
@@ -64,8 +64,36 @@ void ConvertPDG_(int *flukaid, int *pdgcode)
     // anti-K0
     case 25: *pdgcode = -311; break;
     // muon neutrino
-    case 26: *pdgcode = 14; break;
+    case 27: *pdgcode = 14; break;
     // muon anti-neutrino
-    case 27: *pdgcode = -14; break;
+    case 28: *pdgcode = -14; break;
+    // anti-sigma-
+    case 31: *pdgcode = -3222; break;
+    // anti-sigma0
+    case 32: *pdgcode = -3212; break;
+    // anti-sigma+
+    case 33: *pdgcode = -3112; break;
+    // xi0
+    case 34: *pdgcode = 3322; break;
+    // anti-xi0
+    case 35: *pdgcode = -3322; break;
+    // xi-
+    case 36: *pdgcode = 3312; break;
+    // xi+
+    case 37: *pdgcode = -3312; break;
+    // omega-
+    case 38: *pdgcode = 3334; break;
+    // anti-omega
+    case 39: *pdgcode = -3334; break;
+    // tauon+
+    case 41: *pdgcode = -15; break;
+    // tauon-
+    case 42: *pdgcode = 15; break;
+    // tau neutrino
+    case 43: *pdgcode = 16; break;
+    // tau anti-neutrino
+    case 44: *pdgcode = -16; break;
+    // others
+    default: *pdgcode = 999; break;
   }
 }
