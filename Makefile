@@ -1,13 +1,24 @@
 # Makefile for compile the FLUKA with my code
 
 TARGET = myfluka
+SLIBS  = libFLKEvent.so
 CC     = gcc
+CXX    = g++
+CINT   = rootcint
+
+# cint
+CINTHEAD  = IFLUKAEvent.h  IFLUKAEvent_LinkDef.h
+CINTSRCS  = IFLUKAEventDict.cpp
+ROOTLIBS  = `root-config --glibs`
+ROOTFLAGS = `root-config --cflags`
 
 # c++ code
-CXXSRCS  = IPDGEncoding.cpp
-CXXOBJS  = $(CXXSRCS:.cpp=.o)
-CXXFLAGS = -Wall -O3
-CXXLIBS  =
+CXXSRCS1 = IPDGEncoding.cpp  IFLUKARootDraw.cpp
+CXXSRCS := IFLUKAEvent.cpp  $(CINTSRCS)
+CXXOBJS1 = $(CXXSRCS1:.cpp=.o)
+CXXOBJS  = $(CXXSRCS:.cpp=.o) 
+CXXFLAGS := -Wall -O3  $(ROOTFLAGS)
+CXXLIBS  = $(ROOTLIBS)
 
 # c code
 CCSRCS  = CoilMapReader.c
@@ -16,7 +27,7 @@ CCFLAGS = -O3 -Wall
 CCLIBS  =
 
 # fortran code
-FCSRCS = magfld.f  stuprf.f  mgdraw.f
+FCSRCS = magfld.f  stuprf.f  mgdraw.f  usrini.f  usrout.f
 FCOBJS = $(FCSRCS:.f=.o)
 
 OBJS   = $(CCOBJS) $(FCOBJS) $(CXXOBJS)
@@ -25,23 +36,30 @@ OBJS   = $(CCOBJS) $(FCOBJS) $(CXXOBJS)
 .PHONY: all
 all: $(TARGET)
 
-$(TARGET):$(OBJS)
+$(TARGET):$(CCOBJS) $(FCOBJS) $(CXXOBJS1) $(SLIBS)
 	@echo "Generating Target: $@ ..."
 	$(FLUPRO)/flutil/lfluka -m fluka $^ -o $@
 
-$(CXXOBJS):$(CXXSRCS)
-	@echo "Generating C++ file: $< ..."
-	$(CXX) $(CXXFLAGS) -c $<
+$(SLIBS): $(CINTHEAD) $(CXXOBJS)
+	$(CXX) -shared -O  $(CXXOBJS) $(CXXLIBS) -o $@
 
-$(CCOBJS):$(CCSRCS)
-	@echo "Generating C file: $< ..."
+#$(CXXOBJS): $(CXXSRCS)
+%.o: %.cpp
+	@echo "Generating C++ file: $@ ..."
+	$(CXX) $(CXXFLAGS) -fPIC -c $<
+
+$(CCOBJS): $(CCSRCS)
+	@echo "Generating C file: $@ ..."
 	$(CC) $(CCFLAGS) -c $<
 
 %.o:%.f
-	@echo "Generating Fortran file: $< ..."
+	@echo "Generating Fortran file: $@ ..."
 	$(FLUPRO)/flutil/fff $<
+
+$(CINTSRCS): $(CINTHEAD)
+	$(CINT) -f $@ -c -p $^
 
 .PHONY: clean
 clean:
-	$(RM) $(OBJS) $(TARGET)
 	@echo "Cleaning ..."
+	$(RM) $(OBJS) $(TARGET)

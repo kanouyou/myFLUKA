@@ -117,20 +117,18 @@
 c      CALL GEOR2N(MREG,MRGNAM,IERR1)
       CALL GEOR2N(NEWREG,NRGNAM,IERR2)
 
-      WRITE (*,*) "dump it..."
-
       IF (.NOT. MYFILE) THEN
         IF (NRGNAM(1:3) .EQ. "DET") THEN
           OPEN(UNIT=51,FILE="output",STATUS="NEW",FORM="FORMATTED")
-          WRITE (51,*) "#Detector", NRGNAM
+          WRITE (51,*) "#Detector: ", NRGNAM
           MYFILE = .TRUE.
         END IF
       END IF
 
       IF (NRGNAM(1:3) .EQ. "DET") THEN
         CALL convertpdg(JTRACK, PDG)
-        WRITE(51,*) NCASE,PDG,XSCO,YSCO,ZSCO,(ISPUSR(I),I=1,3),
-     &  (SPAUSR(I),I=1,10)
+        WRITE(51,*) NCASE,PDG,XSCO,YSCO,ZSCO,(ISPUSR(I),I=1,5),
+     &  (SPAUSR(I),I=1,6)
       END IF
 
       RETURN
@@ -313,6 +311,17 @@ c      CALL GEOR2N(MREG,MRGNAM,IERR1)
          OPEN ( UNIT = IODRAW, FILE = FILNAM, STATUS = 'NEW', FORM =
      &          'UNFORMATTED' )
       END IF
+
+*     filled the data after each interaction into stack
+      LLOUSE = ICODE
+      ISPUSR(1) = JTRACK
+      SPAUSR(1) = XSCO
+      SPAUSR(2) = YSCO
+      SPAUSR(3) = ZSCO
+      SPAUSR(4) = PTRACK * CXTRCK
+      SPAUSR(5) = PTRACK * CYTRCK
+      SPAUSR(6) = PTRACK * CZTRCK
+
 * No output by default:
       RETURN
 *=== End of subrutine Mgdraw ==========================================*

@@ -30,6 +30,10 @@
       DIMENSION WHAT (6)
       CHARACTER SDUM*8
 *
+*     Added by Y.Yang
+      WRITE(*,*) "Simulation Finished..."
+      CALL fileclose()
+
       RETURN
 *=== End of subroutine Usrout =========================================*
       END

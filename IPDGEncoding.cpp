@@ -1,3 +1,4 @@
+
 extern "C" {
   void convertpdg_(int *flukaid, int *pdgcode);
 }
@@ -94,6 +95,7 @@ void convertpdg_(int *flukaid, int *pdgcode)
     // tau anti-neutrino
     case 44: *pdgcode = -16; break;
     // others
+    case  0: *pdgcode = 0; break;
     default: *pdgcode = 999; break;
   }
 }

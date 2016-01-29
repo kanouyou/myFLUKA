@@ -2,27 +2,38 @@
 #define IFLUKAEvent_HH
 
 #include <vector>
+#include <TVector3.h>
 #include <TObject.h>
 
 namespace COMET
 { class IFLUKAEvent; }
 
-class COMET::IFLUKAEvent
+class COMET::IFLUKAEvent : public TObject
 {
   public:
     IFLUKAEvent();
-    ~IFLUKAEvent();
 
-    // set event number
-    void SetEventNum(int num) { fEventNum = num; }
+    // deconstruct
+    virtual ~IFLUKAEvent();
 
-    // get event number
-    double GetEventNum() const { return fEventNum; }
+    // set particle pdgcode
+    virtual void SetPdgCode(const int pdg) { fPdgCode = pdg; }
+
+    // set particle position
+    virtual void SetPosition(double x, double y, double z);
+
+    // get pdgcode
+    virtual int  GetPdgCode() const { return fPdgCode; }
+
+    // get particle position
+    virtual TVector3* GetPosition() const { return fPos; }
 
     ClassDef(COMET::IFLUKAEvent, 1);
 
   private:
-    int fEventNum;
+    int fPdgCode;
+    TVector3* fPos;
+
 };
 
 #endif
