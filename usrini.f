@@ -34,7 +34,7 @@
       LUSRIN = .TRUE.
 * *** Write from here on *** *
 *     Added by Y.Yang
-      CALL openfile()
+*      CALL openfile()
 
       RETURN
 *=== End of subroutine Usrini =========================================*

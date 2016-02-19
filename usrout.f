@@ -32,7 +32,7 @@
 *
 *     Added by Y.Yang
       WRITE(*,*) "Simulation Finished..."
-      CALL fileclose()
+*      CALL fileclose()
 
       RETURN
 *=== End of subroutine Usrout =========================================*

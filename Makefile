@@ -13,7 +13,7 @@ ROOTLIBS  = `root-config --glibs`
 ROOTFLAGS = `root-config --cflags`
 
 # c++ code
-CXXSRCS1 = IPDGEncoding.cpp  IFLUKARootDraw.cpp
+CXXSRCS1 = IPDGEncoding.cpp  #IFLUKARootDraw.cpp  IFLUKALinker.cpp
 CXXSRCS := IFLUKAEvent.cpp  $(CINTSRCS)
 CXXOBJS1 = $(CXXSRCS1:.cpp=.o)
 CXXOBJS  = $(CXXSRCS:.cpp=.o) 
@@ -36,12 +36,12 @@ OBJS   = $(CCOBJS) $(FCOBJS) $(CXXOBJS)
 .PHONY: all
 all: $(TARGET)
 
-$(TARGET):$(CCOBJS) $(FCOBJS) $(CXXOBJS1) $(SLIBS)
+$(TARGET):$(CCOBJS) $(FCOBJS) $(CXXOBJS1)
 	@echo "Generating Target: $@ ..."
-	$(FLUPRO)/flutil/lfluka -m fluka $^ -o $@
+	$(FLUPRO)/flutil/lfluka  -m fluka $^ -o $@
 
-$(SLIBS): $(CINTHEAD) $(CXXOBJS)
-	$(CXX) -shared -O  $(CXXOBJS) $(CXXLIBS) -o $@
+#$(SLIBS): $(CINTHEAD) $(CXXOBJS)
+#	$(CXX) -shared -O  $(CXXOBJS) $(CXXLIBS) -o $@
 
 #$(CXXOBJS): $(CXXSRCS)
 %.o: %.cpp
@@ -56,10 +56,10 @@ $(CCOBJS): $(CCSRCS)
 	@echo "Generating Fortran file: $@ ..."
 	$(FLUPRO)/flutil/fff $<
 
-$(CINTSRCS): $(CINTHEAD)
-	$(CINT) -f $@ -c -p $^
+#$(CINTSRCS): $(CINTHEAD)
+#	$(CINT) -f $@ -c -p $^
 
 .PHONY: clean
 clean:
 	@echo "Cleaning ..."
-	$(RM) $(OBJS) $(TARGET)
+	$(RM) $(OBJS) $(CXXOBJS1) $(CINTSRCS) $(TARGET) $(SLIBS)

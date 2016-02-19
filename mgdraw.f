@@ -114,20 +114,24 @@
       ENTRY BXDRAW ( ICODE, MREG, NEWREG, XSCO, YSCO, ZSCO )
 
 *     Added by Y.Yang
-c      CALL GEOR2N(MREG,MRGNAM,IERR1)
+      CALL GEOR2N(MREG,MRGNAM,IERR1)
       CALL GEOR2N(NEWREG,NRGNAM,IERR2)
 
       IF (.NOT. MYFILE) THEN
-        IF (NRGNAM(1:3) .EQ. "DET") THEN
+        IF (MRGNAM(1:3) .EQ. "DET") THEN
           OPEN(UNIT=51,FILE="output",STATUS="NEW",FORM="FORMATTED")
-          WRITE (51,*) "#Detector: ", NRGNAM
+*          WRITE (51,*) "#Detector: ", NRGNAM
           MYFILE = .TRUE.
         END IF
       END IF
 
-      IF (NRGNAM(1:3) .EQ. "DET") THEN
+      IF (MRGNAM(1:3) .EQ. "DET" .AND. NRGNAM .EQ. "VAC") THEN
         CALL convertpdg(JTRACK, PDG)
-        WRITE(51,*) NCASE,PDG,XSCO,YSCO,ZSCO,(ISPUSR(I),I=1,5),
+        WRITE(51,*) NCASE,ICODE,PDG,XSCO,YSCO,ZSCO,
+     &  CXTRCK * PTRACK,
+     &  CYTRCK * PTRACK,
+     &  CZTRCK * PTRACK,
+     &  (ISPUSR(I),I=1,4),
      &  (SPAUSR(I),I=1,6)
       END IF
 
