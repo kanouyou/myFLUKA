@@ -1,0 +1,55 @@
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+TITLE
+Charged pion fluence inside and around a proton-irradiated Be target
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+BEAM            -8.0                          -2.4      -2.4          PROTON
+BEAMPOS          0.0       0.0     -31.0
+*
+GEOBEGIN                                                              COMBNAME
+    0    0                  A simple graphite target geometry to check yield
+RPP body1      -1000.0 +1000.0 -1000.0 +1000.0 -1000.0 +1000.0
+RPP body2      -200.0 +200.0 -200.0 +200.0 -200.0 +200.0
+RCC target     0.0 0.0 0.0 0.0 0.0 0.837 1.5
+SPH ball       0.0 0.0 0.0 20.
+END
+* black hole
+BLACKH       5 +body1 -body2
+* vacuum around
+VAC          5 +body2 -ball
+TARGET       5 +target
+DET          5 +ball -target
+END
+GEOEND
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+MATERIAL                            8.92       26.                    Cu
+LOW-MAT         LEAD       82.       -2.      296.                    LEAD
+COMPOUND        -1.0    COPPER                                        Cu
+*  External Black Hole
+ASSIGNMA    BLCKHOLE    BLACKH
+*  Vacuum
+ASSIGNMA      VACUUM       VAC
+ASSIGNMA        LEAD    TARGET
+ASSIGNMA      VACUUM       DET
+* e+e- and gamma production threshold set at 10 MeV
+EMFCUT       -0.0001    0.0001    0.0001                              PROD-CUT
+* Switch on the muonuclear reaction
+PHOTONUC       1111.                          LEAD                    MUMUPAIR
+* Switch on the photonuclear reaction
+*PHOTONUC       1111.                            Cu                    ELECTNUC
+THRESHOL                          0.0001    0.0001
+PART-THR      -1E-05    PROTON                           0.0
+PART-THR      -1E-05     PION-                           0.0
+PART-THR      -1E-05     PION+                           0.0
+PART-THR      -1E-05     MUON+                           0.0
+PART-THR      -1E-05  DEUTERON                           0.0
+PART-THR      -1E-05     MUON-                           0.0
+PHYSICS           1.                                                  COALESCE
+PHYSICS           3.                                                  EVAPORAT
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+USRICALL
+USROCALL
+USERDUMP        100.       50.       0.0                              dump
+RANDOMIZ         1.0
+* ..+....1....+....2....+....3....+....4....+....5....+....6....+....7....+....8
+START        50000.0
+STOP
